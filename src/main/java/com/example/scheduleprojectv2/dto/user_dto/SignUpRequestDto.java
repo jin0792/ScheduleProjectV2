@@ -7,13 +7,13 @@ public class SignUpRequestDto {
 
     private final String username;
 
-    private final String password;
-
     private final String email;
 
-    public SignUpRequestDto(String username, String password, String email) {
+    private final String password;
+
+    public SignUpRequestDto(String username, String email, String password) {
         this.username = username;
-        this.password = password;
         this.email = email;
+        this.password = password;
     }
 }

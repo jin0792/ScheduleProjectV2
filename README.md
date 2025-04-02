@@ -47,8 +47,6 @@
 
 ### Lv 4. 로그인(인증)
 
-- 키워드
-
   **인터페이스**
 
     - HttpServletRequest / HttpServletResponse : 각 HTTP 요청에서 주고받는 값들을 담고 있습니다.

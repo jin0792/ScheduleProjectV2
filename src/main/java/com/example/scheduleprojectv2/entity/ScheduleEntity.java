@@ -24,4 +24,18 @@ public class ScheduleEntity extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "users_id")
     private UserEntity users;
+
+
+    public ScheduleEntity() {
+
+    }
+
+    public ScheduleEntity(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+    }
+
+    public void setUser(UserEntity userEntity) {
+        this.users = userEntity;
+    }
 }

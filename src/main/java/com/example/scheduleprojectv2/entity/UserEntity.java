@@ -3,6 +3,9 @@ package com.example.scheduleprojectv2.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Entity
 @Table(name = "users")
@@ -18,6 +21,8 @@ public class UserEntity extends BaseEntity {
     @Column(length = 20, nullable = false)
     private String password;
 
+    @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE) // mappedBy 양방향 연관관계에서 부모일 때 사용
+    private List<ScheduleEntity> scheduleEntities = new ArrayList<>();
 
     public UserEntity() {
 

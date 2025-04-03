@@ -2,14 +2,13 @@ package com.example.scheduleprojectv2.controller;
 
 import com.example.scheduleprojectv2.dto.user_dto.SignUpRequestDto;
 import com.example.scheduleprojectv2.dto.user_dto.SignUpResponseDto;
+import com.example.scheduleprojectv2.dto.user_dto.UpdatePasswordRequestDto;
+import com.example.scheduleprojectv2.dto.user_dto.UserResponseDto;
 import com.example.scheduleprojectv2.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -30,7 +29,24 @@ public class UserController {
                 );
 
         return new ResponseEntity<>(signUpResponseDto,HttpStatus.CREATED);
+    }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseDto> findById(@PathVariable Long id) {
+        UserResponseDto userResponseDto = userService.findById(id);
+
+        return new ResponseEntity<>(userResponseDto, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> updatePassword(
+            @PathVariable Long id,
+            @RequestBody UpdatePasswordRequestDto requestDto
+            ) {
+
+        userService.updatePassword(id, requestDto.getOldPassword(), requestDto.getNewPassword());
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

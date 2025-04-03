@@ -18,6 +18,7 @@ public class ScheduleResponseDto {
         this.contents = contents;
     }
 
+    // 정적 팩토리 메소드
     public static ScheduleResponseDto toDto(ScheduleEntity schedule) {
         return new ScheduleResponseDto(schedule.getId(), schedule.getTitle(), schedule.getContents());
     }

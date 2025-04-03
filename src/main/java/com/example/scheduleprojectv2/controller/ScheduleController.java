@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/schedules")
 @RequiredArgsConstructor
+@RequestMapping("/schedules")
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
@@ -48,7 +48,7 @@ public class ScheduleController {
     public ResponseEntity<ScheduleResponseDto> updateSchedule(
             @PathVariable Long scheduleId,
             @RequestBody CreateScheduleRequestDto requestDto
-            ) {
+    ) {
         ScheduleResponseDto scheduleResponseDto = scheduleService.updateSchedule(
                 scheduleId, requestDto.getTitle(), requestDto.getContents()
         );
@@ -67,3 +67,4 @@ public class ScheduleController {
 
 
 }
+

@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +20,7 @@ public class ScheduleService {
     private final UserRepository userRepository;
     private final ScheduleRepository scheduleRepository;
 
+    @Transactional
     public ScheduleResponseDto save(String title, String contents, String username) {
 
         UserEntity findUser = userRepository.findUserByUernameOrElseThrow(username);
@@ -42,13 +42,9 @@ public class ScheduleService {
     }
 
     public ScheduleResponseDto findById(Long id) {
-        Optional<ScheduleEntity> optionalSchedule = scheduleRepository.findById(id);
-
-        if (optionalSchedule.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "일정을 조회할 수 없습니다 :" + id);
-        }
-
-        ScheduleEntity findSchedule = optionalSchedule.get();
+        ScheduleEntity findSchedule = scheduleRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "일정을 조회할 수 없습니다 :" + id)
+        );
 
         return new ScheduleResponseDto(findSchedule.getId(), findSchedule.getTitle(), findSchedule.getContents());
     }
@@ -67,6 +63,7 @@ public class ScheduleService {
         );
     }
 
+    @Transactional
     public void deleteSchedule(Long scheduleId) {
 
         ScheduleEntity findSchedule = scheduleRepository.findByIdOrElseThrow(scheduleId);

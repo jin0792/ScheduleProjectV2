@@ -26,4 +26,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
                         )
                 );
     }
+
+    UserEntity findByEmailAndPassword(String email, String password);
 }

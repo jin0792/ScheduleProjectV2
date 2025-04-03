@@ -3,11 +3,13 @@ package com.example.scheduleprojectv2.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 
 @Getter
 @Entity
 @Table(name = "schedules")
+@NoArgsConstructor
 public class ScheduleEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 임의의 아이디 값으로 만듬
@@ -24,11 +26,6 @@ public class ScheduleEntity extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "users_id")
     private UserEntity users;
-
-
-    public ScheduleEntity() {
-
-    }
 
     public ScheduleEntity(String title, String contents, String username) {
         this.title = title;

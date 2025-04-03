@@ -57,4 +57,14 @@ public class UserService {
 
         userRepository.delete(findUser);
     }
+
+    public UserResponseDto login(String email, String password) {
+        UserEntity findUser = userRepository.findByEmailAndPassword(email, password);
+
+        if( findUser == null ) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디 입력은 필수입니다");
+        }
+
+        return UserResponseDto.toDto(findUser);
+    }
 }

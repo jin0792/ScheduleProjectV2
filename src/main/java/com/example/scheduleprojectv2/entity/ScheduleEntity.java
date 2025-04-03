@@ -39,4 +39,10 @@ public class ScheduleEntity extends BaseEntity {
     public void setUser(UserEntity userEntity) {
         this.users = userEntity;
     }
+
+    public void updateSchedule(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+
+    }
 }

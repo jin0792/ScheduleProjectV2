@@ -8,6 +8,7 @@ import com.example.scheduleprojectv2.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -50,5 +51,19 @@ public class ScheduleService {
         ScheduleEntity findSchedule = optionalSchedule.get();
 
         return new ScheduleResponseDto(findSchedule.getId(), findSchedule.getTitle(), findSchedule.getContents());
+    }
+
+    @Transactional
+    public ScheduleResponseDto updateSchedule(Long scheduleId, String title, String contents) {
+
+        ScheduleEntity findSchedule = scheduleRepository.findByIdOrElseThrow(scheduleId);
+
+        findSchedule.updateSchedule(title,contents);
+
+        return new ScheduleResponseDto(
+                findSchedule.getId(),
+                findSchedule.getTitle(),
+                findSchedule.getContents()
+        );
     }
 }

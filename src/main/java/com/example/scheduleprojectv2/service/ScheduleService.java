@@ -66,4 +66,12 @@ public class ScheduleService {
                 findSchedule.getContents()
         );
     }
+
+    public void deleteSchedule(Long scheduleId) {
+
+        ScheduleEntity findSchedule = scheduleRepository.findByIdOrElseThrow(scheduleId);
+
+        scheduleRepository.delete(findSchedule);
+
+    }
 }

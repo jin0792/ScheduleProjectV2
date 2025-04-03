@@ -8,6 +8,8 @@ import com.example.scheduleprojectv2.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ScheduleService {
@@ -19,11 +21,19 @@ public class ScheduleService {
 
         UserEntity findUser = userRepository.findUserByUernameOrElseThrow(username);
 
-        ScheduleEntity schedule = new ScheduleEntity(title, contents);
+        ScheduleEntity schedule = new ScheduleEntity(title, contents, username);
         schedule.setUser(findUser);
 
         ScheduleEntity savedSchedule = scheduleRepository.save(schedule);
 
         return new ScheduleResponseDto(savedSchedule.getId(),savedSchedule.getTitle(),savedSchedule.getContents());
+    }
+
+    public List<ScheduleResponseDto> findAll() {
+
+        return scheduleRepository.findAll()
+                .stream()
+                .map(ScheduleResponseDto::toDto)
+                .toList();
     }
 }

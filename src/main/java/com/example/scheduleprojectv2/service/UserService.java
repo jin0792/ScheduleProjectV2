@@ -51,4 +51,10 @@ public class UserService {
 
         findUser.updatePassword(newPassword);
     }
+
+    public void deleteUser(Long id) {
+        UserEntity findUser = userRepository.findByIdOrElseThrow(id);
+
+        userRepository.delete(findUser);
+    }
 }

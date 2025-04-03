@@ -8,7 +8,7 @@ import lombok.Getter;
 @Table(name = "users")
 public class UserEntity extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 임의의 아이디 값으로 만듦
     private Long id;
 
     @Column(length = 10, nullable = false)

@@ -1,10 +1,14 @@
 package com.example.scheduleprojectv2.dto.schedule_dto;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
 public class CreateScheduleRequestDto {
 
+    @NotNull
+    @Size(max = 10)
     private final String title;
 
     private final String contents;

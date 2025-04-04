@@ -34,7 +34,7 @@ public class UserController {
         return new ResponseEntity<>(signUpResponseDto,HttpStatus.CREATED);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/id")
     public ResponseEntity<UserResponseDto> login(
             @RequestBody LoginRequestDto requestDto,
             HttpServletRequest httpServletRequest

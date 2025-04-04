@@ -1,5 +1,6 @@
 package com.example.scheduleprojectv2.service;
 
+import com.example.scheduleprojectv2.config.PasswordEncoder;
 import com.example.scheduleprojectv2.dto.user_dto.SignUpResponseDto;
 import com.example.scheduleprojectv2.dto.user_dto.UserResponseDto;
 import com.example.scheduleprojectv2.entity.UserEntity;
@@ -18,13 +19,31 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     public SignUpResponseDto signUp(String username, String password, String email) {
 
-        UserEntity user = new UserEntity(username, password, email);
+        String encodedPassword = passwordEncoder.encode(password);
+
+        UserEntity user = new UserEntity(username, encodedPassword, email);
 
         UserEntity savedUser = userRepository.save(user);
 
         return new SignUpResponseDto(savedUser.getId(), savedUser.getUsername(), savedUser.getEmail());
+    }
+
+    public UserResponseDto login(String email, String password) {
+        UserEntity findUser = userRepository.findByEmail(email).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 조회할 수 없습니다")
+        );
+
+        boolean matches = passwordEncoder.matches(password, findUser.getPassword());
+
+        if( !matches ) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디 입력은 필수입니다");
+        }
+
+        return UserResponseDto.toDto(findUser);
     }
 
     public UserResponseDto findById(Long id) {
@@ -56,15 +75,5 @@ public class UserService {
         UserEntity findUser = userRepository.findByIdOrElseThrow(id);
 
         userRepository.delete(findUser);
-    }
-
-    public UserResponseDto login(String email, String password) {
-        UserEntity findUser = userRepository.findByEmailAndPassword(email, password);
-
-        if( findUser == null ) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디 입력은 필수입니다");
-        }
-
-        return UserResponseDto.toDto(findUser);
     }
 }

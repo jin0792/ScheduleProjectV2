@@ -13,7 +13,7 @@ public class SignUpRequestDto {
     private final String username;
 
     @NotNull
-    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
+    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$") // 영문, 대소문자, 숫자를 포함한 1자 이상
     private final String email;
 
     private final String password;

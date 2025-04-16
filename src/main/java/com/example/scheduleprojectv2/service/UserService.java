@@ -11,50 +11,43 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
+    // repository에 접근
     private final UserRepository userRepository;
 
+    // encoder에 접근
     private final PasswordEncoder passwordEncoder;
 
-    public SignUpResponseDto signUp(String username, String password, String email) {
+    // 회원가입
+    public SignUpResponseDto signUp(String username, String email, String password) {
 
         String encodedPassword = passwordEncoder.encode(password);
 
-        UserEntity user = new UserEntity(username, encodedPassword, email);
+        UserEntity user = new UserEntity(username, email, encodedPassword);
 
         UserEntity savedUser = userRepository.save(user);
 
         return new SignUpResponseDto(savedUser.getId(), savedUser.getUsername(), savedUser.getEmail());
     }
 
-    public UserResponseDto login(String email, String password) {
-        UserEntity findUser = userRepository.findByEmail(email).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 조회할 수 없습니다")
-        );
-
-        boolean matches = passwordEncoder.matches(password, findUser.getPassword());
-
-        if( !matches ) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디 입력은 필수입니다");
-        }
-
-        return UserResponseDto.toDto(findUser);
-    }
-
     public UserResponseDto findById(Long id) {
 
-        Optional<UserEntity> optionalUser = userRepository.findById(id);
+//        Optional<UserEntity> optionalUser = userRepository.findById(id);
+//
+//        if (optionalUser.isEmpty()) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 조회할 수 없습니다 :" + id);
+//        }
+//
+//        UserEntity findUser = optionalUser.get();
+//
+//        return new UserResponseDto(findUser.getUsername(), findUser.getEmail());
 
-        if (optionalUser.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 조회할 수 없습니다 :" + id);
-        }
-
-        UserEntity findUser = optionalUser.get();
+        UserEntity findUser = userRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 조회할 수 없습니다. :" + id)
+        );
 
         return new UserResponseDto(findUser.getUsername(), findUser.getEmail());
     }
